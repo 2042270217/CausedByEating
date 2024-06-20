@@ -10,4 +10,6 @@ import java.util.List;
 public interface FoodMapper {
     @Select("select * from food where businessId =#{businessId}")
     List<Food> list(int businessId);
+    @Select("select * from food where foodId =#{foodId}")
+    Food getFood(int foodId);
 }

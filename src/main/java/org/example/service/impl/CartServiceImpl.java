@@ -7,24 +7,26 @@ import org.example.utils.ThreadLocalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class CartServiceImpl implements CartService {
     @Autowired
     CartMapper cartMapper;
+
     @Override
     public void add(Cart cart) {
-        Map<String,Object> map = ThreadLocalUtils.get();
-        String userId=(String) map.get("userId");
+        Map<String, Object> map = ThreadLocalUtils.get();
+        String userId = (String) map.get("userId");
         cart.setUserId(userId);
         cartMapper.add(cart);
     }
 
     @Override
     public void update(Cart cart) {
-        Map<String,Object> map = ThreadLocalUtils.get();
-        String userId=(String) map.get("userId");
+        Map<String, Object> map = ThreadLocalUtils.get();
+        String userId = (String) map.get("userId");
         cart.setUserId(userId);
         cartMapper.update(cart);
     }
@@ -32,5 +34,12 @@ public class CartServiceImpl implements CartService {
     @Override
     public void delete(int cartId) {
         cartMapper.delete(cartId);
+    }
+
+    @Override
+    public List<Cart> list(int businessId) {
+        Map<String, Object> map = ThreadLocalUtils.get();
+        String userId = (String) map.get("userId");
+        return cartMapper.list(businessId, userId);
     }
 }

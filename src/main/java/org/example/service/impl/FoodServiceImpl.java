@@ -18,4 +18,10 @@ public class FoodServiceImpl implements FoodService {
     public List<Food> list(int businessId) {
         return foodMapper.list(businessId);
     }
+
+    @Override
+    public Food getFood(int foodId) {
+        return foodMapper.getFood(foodId);
+    }
+
 }

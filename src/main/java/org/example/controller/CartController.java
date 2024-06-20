@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/cart")
@@ -33,4 +35,11 @@ public class CartController {
         cartService.delete(cartId);
         return Result.success();
     }
+
+    @GetMapping("/list")
+    public Result<List<Cart>> list(int businessId){
+        var list = cartService.list(businessId);
+        return Result.success(list);
+    }
+
 }
