@@ -5,7 +5,6 @@ import org.example.mapper.OrdersMapper;
 import org.example.pojo.Cart;
 import org.example.pojo.Orders;
 import org.example.pojo.OrdersBean;
-import org.example.pojo.Result;
 import org.example.service.FoodService;
 import org.example.service.OrdersService;
 import org.example.utils.ThreadLocalUtils;
@@ -51,5 +50,12 @@ public class OrdersServiceImpl implements OrdersService {
 
         output.setOrderId(orders.getOrderId());
         return output;
+    }
+
+    @Override
+    public List<Orders> list() {
+        Map<String, Object> map = ThreadLocalUtils.get();
+        String userId = (String) map.get("userId");
+        return ordersMapper.list(userId);
     }
 }
