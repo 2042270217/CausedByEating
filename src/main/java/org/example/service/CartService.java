@@ -5,7 +5,7 @@ import org.example.pojo.Cart;
 import java.util.List;
 
 public interface CartService {
-    boolean add(Cart cart);
+    boolean set(Cart cart);
 
     void update(Cart cart);
 

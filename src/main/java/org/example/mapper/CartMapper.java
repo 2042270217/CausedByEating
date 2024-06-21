@@ -20,4 +20,9 @@ public interface CartMapper {
     @Select("select * from cart where businessId=#{business} and userId=#{userId}")
     List<Cart> list(int businessId, String userId);
 
+    @Select("select count(*)>0 from cart where businessId=#{businessId} and userId=#{userId} and foodId=#{foodId}")
+    boolean shouldUpdate(int businessId, String userId, int foodId);
+
+    @Select("select * from cart where businessId=#{businessId} and userId=#{userId} and foodId=#{foodId}")
+    int getCartId(int businessId, String userId, int foodId);
 }
