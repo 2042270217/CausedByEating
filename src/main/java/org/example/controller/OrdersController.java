@@ -5,10 +5,8 @@ import org.example.pojo.OrdersBean;
 import org.example.pojo.Result;
 import org.example.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +26,11 @@ public class OrdersController {
     public Result<List<Orders>> list() {
         List<Orders> list = ordersService.list();
         return Result.success(list);
+    }
+
+    @PutMapping("/update")
+    public Result<OrdersBean> update(@RequestBody @Validated Orders order){
+        OrdersBean output = ordersService.update(order);
+        return Result.success(output);
     }
 }

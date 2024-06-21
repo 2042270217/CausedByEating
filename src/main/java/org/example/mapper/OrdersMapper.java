@@ -1,9 +1,6 @@
 package org.example.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.example.pojo.Orders;
 
 import java.util.List;
@@ -17,4 +14,8 @@ public interface OrdersMapper {
 
     @Select("select * from orders where userId=#{userId}")
     List<Orders> list(String userId);
+
+    @Update("update orders set userId=#{userId},businessId=#{businessId},orderDate=#{orderDate},orderTotal=#{orderTotal},daId=#{daId}, orderState=#{orderState} where orderId=#{orderId}")
+    void update(Orders orders);
+
 }

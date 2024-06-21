@@ -20,8 +20,11 @@ public class CartController {
 
     @PostMapping("/add")
     public Result add(@RequestBody @Validated Cart cart) {
-        cartService.add(cart);
-        return Result.success();
+        if (cartService.add(cart)) {
+            return Result.success();
+        } else {
+            return Result.error("食物与商家不匹配");
+        }
     }
 
     @PutMapping("/update")
@@ -37,7 +40,7 @@ public class CartController {
     }
 
     @GetMapping("/list")
-    public Result<List<Cart>> list(int businessId){
+    public Result<List<Cart>> list(int businessId) {
         var list = cartService.list(businessId);
         return Result.success(list);
     }

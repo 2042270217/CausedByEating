@@ -58,4 +58,29 @@ public class OrdersServiceImpl implements OrdersService {
         String userId = (String) map.get("userId");
         return ordersMapper.list(userId);
     }
+
+    @Override
+    public OrdersBean update(Orders order) {
+        OrdersBean output = new OrdersBean();
+
+        Map<String, Object> map = ThreadLocalUtils.get();
+        String userId = (String) map.get("userId");
+
+        List<Cart> cartList = cartMapper.list(order.getBusinessId(), userId);
+        int total = 0;
+        for (Cart cart : cartList) {
+            int foodPrice = foodService.getFood(cart.getFoodId()).getFoodPrice();
+            total += cart.getQuantity();
+        }
+        output.setOrderTotal(total);
+        output.setOrderId(order.getOrderId());
+
+        order.setOrderTotal(total);
+        order.setUserId(userId);
+        order.setOrderDate(String.valueOf(LocalDateTime.now()));
+
+        ordersMapper.update(order);
+
+        return output;
+    }
 }
