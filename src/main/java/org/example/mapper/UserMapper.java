@@ -10,7 +10,7 @@ public interface UserMapper {
     @Select("select * from user where userId=#{userId}")
     User findByUserId(String userId);
 
-    @Insert("insert into user(userId, password,userSex, delTag)" +
-            " values (#{userId},#{password},#{1},#{1})")
-    void add(String userId, String password);
+    @Insert("insert into user(userId, password,userName, userImg)" +
+            " values (#{userId},#{password},#{userName},null)")
+    void add(String userId, String password, String userName);
 }
