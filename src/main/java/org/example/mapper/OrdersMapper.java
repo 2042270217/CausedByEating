@@ -12,6 +12,6 @@ import java.time.LocalDateTime;
 public interface OrdersMapper {
     @Insert("insert into orders(userId, businessId, orderDate,orderTotal, daId,orderState) " +
             "values (#{userId},#{businessId},#{orderDate},#{orderTotal},#{daId},#{orderState} )")
-    @Options(useGeneratedKeys = true, keyProperty = "pid")
+    @Options(useGeneratedKeys = true, keyProperty = "orderId")
     Orders add(Orders orders);
 }

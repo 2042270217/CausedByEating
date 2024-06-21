@@ -48,6 +48,8 @@ public class OrdersServiceImpl implements OrdersService {
         orders.setOrderDate(String.valueOf(LocalDateTime.now()));
 
         ordersMapper.add(orders);
+
+        output.setOrderId(orders.getOrderId());
         return output;
     }
 }
