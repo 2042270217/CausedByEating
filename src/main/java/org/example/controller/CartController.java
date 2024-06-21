@@ -19,12 +19,13 @@ public class CartController {
     private CartService cartService;
 
     @PostMapping("/add")
-    public Result add(@RequestBody @Validated Cart cart) {
-        if (cartService.add(cart)) {
-            return Result.success();
-        } else {
-            return Result.error("食物与商家不匹配");
-        }
+    public Result<Cart> add(@RequestBody @Validated Cart cart) {
+        return Result.success(cart);
+//        if (cartService.add(cart)) {
+//            return Result.success();
+//        } else {
+//            return Result.error("食物与商家不匹配");
+//        }
     }
 
     @PutMapping("/update")

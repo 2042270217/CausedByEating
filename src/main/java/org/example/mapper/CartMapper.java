@@ -9,7 +9,7 @@ import java.util.List;
 public interface CartMapper {
     @Insert("insert into cart(foodId, businessId, userId, quantity) " +
             "values(#{foodId},#{businessId},#{userId},#{quantity})")
-    public void add(Cart cart);
+    void add(Cart cart);
 
     @Update("update cart set foodId=#{foodId},businessId=#{businessId},userId=#{userId},quantity=#{quantity} where cartId=#{cartId}")
     void update(Cart cart);
