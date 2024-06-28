@@ -51,7 +51,10 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void delete(int cartId) {
+    public void delete(int foodId, int businessId) {
+        Map<String, Object> map = ThreadLocalUtils.get();
+        String userId = (String) map.get("userId");
+        int cartId = cartMapper.getCartId(foodId, userId, businessId);
         cartMapper.delete(cartId);
     }
 

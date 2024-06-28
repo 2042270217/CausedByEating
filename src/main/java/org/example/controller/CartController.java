@@ -27,15 +27,9 @@ public class CartController {
         }
     }
 
-    @PutMapping("/update")
-    public Result update(@RequestBody @Validated Cart cart) {
-        cartService.update(cart);
-        return Result.success();
-    }
-
     @DeleteMapping("/delete")
-    public Result delete(int cartId) {
-        cartService.delete(cartId);
+    public Result delete(int foodId,int businessId) {
+        cartService.delete(foodId,businessId);
         return Result.success();
     }
 

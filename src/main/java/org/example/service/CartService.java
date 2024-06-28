@@ -9,7 +9,7 @@ public interface CartService {
 
     void update(Cart cart);
 
-    void delete(int cartId);
+    void delete(int foodId, int businessId);
 
     List<Cart> list(int businessId);
 }
