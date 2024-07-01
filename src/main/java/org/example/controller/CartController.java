@@ -4,11 +4,13 @@ import org.apache.ibatis.annotations.Delete;
 import org.example.pojo.Cart;
 import org.example.pojo.Result;
 import org.example.service.CartService;
+import org.example.utils.ThreadLocalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -28,9 +30,13 @@ public class CartController {
     }
 
     @DeleteMapping("/delete")
-    public Result delete(int foodId,int businessId) {
-        cartService.delete(foodId,businessId);
-        return Result.success();
+    public Result delete(int foodId, int businessId) {
+        boolean check = cartService.delete(foodId, businessId);
+        if (check) {
+            return Result.success();
+        } else {
+            return Result.error("删除失败");
+        }
     }
 
     @GetMapping("/list")

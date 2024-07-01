@@ -23,6 +23,6 @@ public interface CartMapper {
     @Select("select count(*)>0 from cart where businessId=#{businessId} and userId=#{userId} and foodId=#{foodId}")
     boolean shouldUpdate(int businessId, String userId, int foodId);
 
-    @Select("select * from cart where businessId=#{businessId} and userId=#{userId} and foodId=#{foodId}")
-    int getCartId(int businessId, String userId, int foodId);
+    @Select("select cartId from cart where businessId=#{businessId} and userId=#{userId} and foodId=#{foodId}")
+    Integer getCartId(int foodId, String userId, int businessId);
 }
