@@ -11,9 +11,12 @@ import org.example.utils.ThreadLocalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.SimpleFormatter;
 
 @Service
 public class OrdersServiceImpl implements OrdersService {
@@ -33,7 +36,7 @@ public class OrdersServiceImpl implements OrdersService {
         int total = 0;
         for (Cart cart : cartList) {
             int foodPrice = foodService.getFood(cart.getFoodId()).getFoodPrice();
-            total += cart.getQuantity();
+            total += cart.getQuantity() * foodPrice;
         }
         OrdersBean output = new OrdersBean();
         output.setOrderTotal(total);
@@ -44,11 +47,11 @@ public class OrdersServiceImpl implements OrdersService {
         orders.setDaId(daId);
         orders.setUserId(userId);
         orders.setOrderState(0);
-        orders.setOrderDate(String.valueOf(LocalDateTime.now()));
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        orders.setOrderDate(formatter.format(date));
 
-        ordersMapper.add(orders);
-
-        output.setOrderId(orders.getOrderId());
+        output.setOrderId(ordersMapper.add(orders));
         return output;
     }
 

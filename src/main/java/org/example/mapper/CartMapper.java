@@ -17,7 +17,7 @@ public interface CartMapper {
     @Delete("delete from cart where cartId=#{cartId}")
     void delete(int cartId);
 
-    @Select("select * from cart where businessId=#{business} and userId=#{userId}")
+    @Select("select * from cart where businessId=#{businessId} and userId=#{userId}")
     List<Cart> list(int businessId, String userId);
 
     @Select("select count(*)>0 from cart where businessId=#{businessId} and userId=#{userId} and foodId=#{foodId}")

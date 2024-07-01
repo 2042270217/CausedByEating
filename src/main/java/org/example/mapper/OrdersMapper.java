@@ -10,7 +10,7 @@ public interface OrdersMapper {
     @Insert("insert into orders(userId, businessId, orderDate,orderTotal, daId,orderState) " +
             "values (#{userId},#{businessId},#{orderDate},#{orderTotal},#{daId},#{orderState} )")
     @Options(useGeneratedKeys = true, keyProperty = "orderId")
-    Orders add(Orders orders);
+    int add(Orders orders);
 
     @Select("select * from orders where userId=#{userId}")
     List<Orders> list(String userId);
