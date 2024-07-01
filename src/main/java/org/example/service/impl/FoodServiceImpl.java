@@ -1,5 +1,6 @@
 package org.example.service.impl;
 
+import org.example.mapper.BusinessMapper;
 import org.example.mapper.FoodMapper;
 import org.example.pojo.Food;
 import org.example.service.FoodService;
@@ -13,10 +14,17 @@ public class FoodServiceImpl implements FoodService {
 
     @Autowired
     FoodMapper foodMapper;
+    @Autowired
+    BusinessMapper businessMapper;
 
     @Override
     public List<Food> list(int businessId) {
-        return foodMapper.list(businessId);
+        boolean check = businessMapper.findBusiness(businessId);
+        if (check) {
+            return foodMapper.list(businessId);
+        } else {
+            return null;
+        }
     }
 
     @Override

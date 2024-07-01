@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cart")
-@Validated
+
 public class CartController {
     @Autowired
     private CartService cartService;

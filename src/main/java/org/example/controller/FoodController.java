@@ -20,6 +20,11 @@ public class FoodController {
     @GetMapping
     public Result<List<Food>> list(int businessId) {
         var list = foodService.list(businessId);
-        return Result.success(list);
+        if (list==null) {
+            return Result.error("商家不存在");
+        }
+        else{
+            return Result.success(list);
+        }
     }
 }

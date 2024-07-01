@@ -13,4 +13,7 @@ public interface BusinessMapper {
 
     @Select("select * from business where orderTypeId=#{orderTypeId}")
     List<Business> listByType(int orderTypeId);
+
+    @Select("select count(*)>0 from business where businessId =#{businessId}")
+    boolean findBusiness(int businessId);
 }

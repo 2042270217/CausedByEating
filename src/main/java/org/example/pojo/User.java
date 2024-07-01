@@ -16,4 +16,5 @@ public class User {
     private int userSex;
     private String userImage;
     private int delTag;
+
 }

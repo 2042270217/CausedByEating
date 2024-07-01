@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception e) {
-        return Result.error(StringUtil.isNullOrEmpty(e.getMessage()) ? e.getMessage() : "操作失败");
+        return Result.error(StringUtil.isNullOrEmpty(e.getMessage()) ? "操作失败" : e.getMessage());
     }
 }
