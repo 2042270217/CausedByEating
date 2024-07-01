@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(String userId, String password) {
-        userMapper.add(userId, password, userId);
+    public void register(String userId, String password, String userName) {
+        userMapper.add(userId, password, userName);
     }
 }

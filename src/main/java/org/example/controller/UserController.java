@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Pattern;
 import org.example.pojo.Result;
 import org.example.pojo.User;
 import org.example.service.UserService;
+import org.example.utils.IdGeneratorUtils;
 import org.example.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -23,19 +24,22 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public Result register(@Pattern(regexp = "^\\S{6,16}$") String userId, @Pattern(regexp = "^\\S{6,16}$") String password) {
+    public Result register(@Pattern(regexp = "^\\S{6,16}$") @RequestParam(name = "userName") String userName, @Pattern(regexp = "^\\S{6,16}$") @RequestParam(name = "password") String password) {
+        String userId = IdGeneratorUtils.genId();
         User u = userService.findByUserId(userId);
-        if (u == null) {
-            //注册
-            userService.register(userId, password);
-            return Result.success();
-        } else {
-            return Result.error("用户名已占用");
+        while (u != null) {
+//            /反复测试
+            userId = IdGeneratorUtils.genId();
+            u = userService.findByUserId(userId);
         }
+        //可以注册
+        userService.register(userId, password,userName);
+        return Result.success(userId);
+
     }
 
     @PostMapping("/login")
-    public Result login(@RequestParam("userId") String userId,@RequestParam("password") String password) {
+    public Result login(@RequestParam(name = "userId") String userId, @RequestParam(name = "password") String password) {
         User u = userService.findByUserId(userId);
         if (u == null) {
             return Result.error("用户不存在");
