@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Result login(@Pattern(regexp = "^\\S{5,16}$") String userId, @Pattern(regexp = "^\\S{5,16}$") String password) {
+    public Result login(@RequestParam("userId") String userId,@RequestParam("password") String password) {
         User u = userService.findByUserId(userId);
         if (u == null) {
             return Result.error("用户不存在");
