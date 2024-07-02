@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import org.example.pojo.Result;
 import org.example.pojo.User;
@@ -8,10 +9,7 @@ import org.example.utils.IdGeneratorUtils;
 import org.example.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,13 +31,13 @@ public class UserController {
             u = userService.findByUserId(userId);
         }
         //可以注册
-        userService.register(userId, password,userName);
+        userService.register(userId, password, userName);
         return Result.success(userId);
 
     }
 
     @PostMapping("/login")
-    public Result login(@RequestParam(name = "userId") String userId, @RequestParam(name = "password") String password) {
+    public Result login(@Pattern(regexp = "^\\S{6,16}$") @RequestParam(name = "userId") String userId, @Pattern(regexp = "^\\S{6,16}$") @RequestParam(name = "password") String password) {
         User u = userService.findByUserId(userId);
         if (u == null) {
             return Result.error("用户不存在");
@@ -55,5 +53,26 @@ public class UserController {
                 return Result.error("密码错误");
             }
         }
+    }
+
+    @PutMapping("/update")
+    public Result update(@RequestBody @Validated User user) {
+        userService.update(user);
+        return Result.success();
+    }
+
+    @PutMapping("/updateImg")
+    public Result updateImg(@NotEmpty String userImg) {
+        userService.updateImg(userImg);
+        return Result.success();
+    }
+
+    @PutMapping("/updatePassword")
+    public Result updatePassword(@Pattern(regexp = "^\\S{6,16}$") @RequestParam(name = "password") String password) {
+        boolean check = userService.updatePassword(password);
+        if (!check) {
+            return Result.error("新密码不能与原密码相同");
+        }
+        return Result.success();
     }
 }
