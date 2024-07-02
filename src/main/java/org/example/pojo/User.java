@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Range;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
+    @JsonIgnore
     private String userId;
     @JsonIgnore
     private String password;
@@ -19,6 +20,7 @@ public class User {
     @Range(min = 0, max = 1,message = "数值越界[0,1]")
     private int userSex;
     private String userImage;
+    @JsonIgnore
     @Range(min = 0, max = 1,message = "数值越界[0,1]")
     private int delTag;
 

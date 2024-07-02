@@ -7,6 +7,7 @@ import org.example.pojo.User;
 import org.example.service.UserService;
 import org.example.utils.IdGeneratorUtils;
 import org.example.utils.JWTUtils;
+import org.example.utils.ThreadLocalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -74,5 +75,13 @@ public class UserController {
             return Result.error("新密码不能与原密码相同");
         }
         return Result.success();
+    }
+
+    @GetMapping("/get")
+    public Result<User> get() {
+        Map<String, Object> map = ThreadLocalUtils.get();
+        String userId = (String) map.get("userId");
+        var u = userService.findByUserId(userId);
+        return Result.success(u);
     }
 }
