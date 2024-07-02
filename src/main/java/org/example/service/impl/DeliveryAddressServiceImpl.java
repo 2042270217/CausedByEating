@@ -14,6 +14,7 @@ import java.util.Map;
 public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     @Autowired
     DeliveryAddressMapper deliveryAddressMapper;
+
     @Override
     public void add(DeliveryAddress deliveryAddress) {
         Map<String, Object> map = ThreadLocalUtils.get();
@@ -23,8 +24,15 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     }
 
     @Override
-    public void update(DeliveryAddress deliveryAddress) {
+    public boolean update(DeliveryAddress deliveryAddress) {
+        Map<String, Object> map = ThreadLocalUtils.get();
+        String userId = (String) map.get("userId");
+        boolean check = deliveryAddressMapper.check(deliveryAddress.getDaId(), userId);
+        if(!check){
+            return false;
+        }
         deliveryAddressMapper.update(deliveryAddress);
+        return true;
     }
 
     @Override
@@ -35,7 +43,14 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     }
 
     @Override
-    public void delete(int daId) {
+    public boolean delete(int daId) {
+        Map<String, Object> map = ThreadLocalUtils.get();
+        String userId = (String) map.get("userId");
+        boolean check = deliveryAddressMapper.check(daId, userId);
+        if(!check){
+            return false;
+        }
         deliveryAddressMapper.delete(daId);
+        return true;
     }
 }

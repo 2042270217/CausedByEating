@@ -19,4 +19,10 @@ public interface DeliveryAddressMapper {
 
     @Delete("delete from deliveryaddress where daId=#{daId}")
     void delete(int daId);
+
+    @Select("select count(*)>0 from deliveryaddress where daId=#{daId} and userId=#{userId}")
+    boolean checkByUserId(int daId, String userId);
+
+    @Select("select count(*) from deliveryaddress where daId=#{daId} and userId=#{userId}")
+    boolean check(int daId, String userId);
 }

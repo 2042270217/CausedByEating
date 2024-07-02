@@ -25,7 +25,10 @@ public class DeliveryAddressController {
 
     @PutMapping("/update")
     public Result update(@RequestBody @Validated DeliveryAddress deliveryAddress) {
-        deliveryAddressService.update(deliveryAddress);
+        boolean check = deliveryAddressService.update(deliveryAddress);
+        if (!check) {
+            return Result.error("收货地址不存在");
+        }
         return Result.success();
     }
 
@@ -36,8 +39,11 @@ public class DeliveryAddressController {
     }
 
     @DeleteMapping("/delete")
-    public Result delete(@Pattern(regexp = "^\\S{6,16}$") int daId) {
-        deliveryAddressService.delete(daId);
+    public Result delete(int daId) {
+        boolean check = deliveryAddressService.delete(daId);
+        if (!check) {
+            return Result.error("收货地址不存在");
+        }
         return Result.success();
     }
 

@@ -7,9 +7,9 @@ import java.util.List;
 public interface DeliveryAddressService {
     void add(DeliveryAddress deliveryAddress);
 
-    void update(DeliveryAddress deliveryAddress);
+    boolean update(DeliveryAddress deliveryAddress);
 
     List<DeliveryAddress> list();
 
-    void delete(int daId);
+    boolean delete(int daId);
 }

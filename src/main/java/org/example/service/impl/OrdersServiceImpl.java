@@ -1,10 +1,12 @@
 package org.example.service.impl;
 
 import org.example.mapper.CartMapper;
+import org.example.mapper.DeliveryAddressMapper;
 import org.example.mapper.OrdersMapper;
 import org.example.pojo.Cart;
 import org.example.pojo.Orders;
 import org.example.pojo.OrdersBean;
+import org.example.pojo.Result;
 import org.example.service.FoodService;
 import org.example.service.OrdersService;
 import org.example.utils.ThreadLocalUtils;
@@ -26,13 +28,21 @@ public class OrdersServiceImpl implements OrdersService {
     CartMapper cartMapper;
     @Autowired
     FoodService foodService;
+    @Autowired
+    DeliveryAddressMapper deliveryAddressMapper;
 
     @Override
-    public OrdersBean add(int businessId, int daId) {
+    public Result add(int businessId, int daId) {
         Map<String, Object> map = ThreadLocalUtils.get();
         String userId = (String) map.get("userId");
-
+        boolean check = deliveryAddressMapper.checkByUserId(daId,userId);
+        if(!check){
+            return Result.error(2);
+        }
         List<Cart> cartList = cartMapper.list(businessId, userId);
+        if(cartList == null || cartList.isEmpty()){
+            return Result.error(3);
+        }
         int total = 0;
         for (Cart cart : cartList) {
             int foodPrice = foodService.getFood(cart.getFoodId()).getFoodPrice();
@@ -52,7 +62,7 @@ public class OrdersServiceImpl implements OrdersService {
         orders.setOrderDate(formatter.format(date));
 
         output.setOrderId(ordersMapper.add(orders));
-        return output;
+        return Result.success(output);
     }
 
     @Override
@@ -63,27 +73,42 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public OrdersBean update(Orders order) {
+    public Result update(Orders order) {
+        int bId=ordersMapper.getBusinessIdByOrderId(order.getOrderId());
+        if(bId!=order.getBusinessId()){
+            //商家异常变更
+            return Result.error(4);
+        }
         OrdersBean output = new OrdersBean();
 
         Map<String, Object> map = ThreadLocalUtils.get();
         String userId = (String) map.get("userId");
-
+        boolean check = deliveryAddressMapper.checkByUserId(order.getDaId(),userId);
+        if(!check){
+            //user与daId不匹配
+            return Result.error(2);
+        }
         List<Cart> cartList = cartMapper.list(order.getBusinessId(), userId);
+        if(cartList == null || cartList.isEmpty()){
+            //购物车不存在
+            return Result.error(3);
+        }
         int total = 0;
         for (Cart cart : cartList) {
             int foodPrice = foodService.getFood(cart.getFoodId()).getFoodPrice();
-            total += cart.getQuantity();
+            total += cart.getQuantity()*foodPrice;
         }
         output.setOrderTotal(total);
         output.setOrderId(order.getOrderId());
 
         order.setOrderTotal(total);
         order.setUserId(userId);
-        order.setOrderDate(String.valueOf(LocalDateTime.now()));
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        order.setOrderDate(formatter.format(date));
 
         ordersMapper.update(order);
 
-        return output;
+        return Result.success(output);
     }
 }

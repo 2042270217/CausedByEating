@@ -18,4 +18,6 @@ public interface OrdersMapper {
     @Update("update orders set userId=#{userId},businessId=#{businessId},orderDate=#{orderDate},orderTotal=#{orderTotal},daId=#{daId}, orderState=#{orderState} where orderId=#{orderId}")
     void update(Orders orders);
 
+    @Select("select businessId from orders where orderId=#{orderId}")
+    int getBusinessIdByOrderId(int orderId);
 }

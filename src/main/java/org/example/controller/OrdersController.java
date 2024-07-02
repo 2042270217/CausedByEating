@@ -17,9 +17,14 @@ public class OrdersController {
     private OrdersService ordersService;
 
     @PostMapping("/add")
-    public Result<OrdersBean> add(int businessId, int daId) {
-        OrdersBean output = ordersService.add(businessId, daId);
-        return Result.success(output);
+    public Result add(int businessId, int daId) {
+        var output = ordersService.add(businessId, daId);
+        if (output.getCode() == 3) {
+            return Result.error("购物车不存在");
+        } else if (output.getCode() == 2) {
+            return Result.error("送货地址不存在");
+        }
+        return Result.success(output.getData());
     }
 
     @GetMapping("/list")
@@ -29,8 +34,15 @@ public class OrdersController {
     }
 
     @PutMapping("/update")
-    public Result<OrdersBean> update(@RequestBody @Validated Orders order){
-        OrdersBean output = ordersService.update(order);
-        return Result.success(output);
+    public Result update(@RequestBody @Validated Orders order) {
+        var output = ordersService.update(order);
+        if (output.getCode() == 2) {
+            return Result.error("送货地址不存在");
+        } else if (output.getCode() == 3) {
+            return Result.error("购物车不存在");
+        } else if (output.getCode() == 4) {
+            return Result.error("商家异常变更");
+        }
+        return Result.success(output.getData());
     }
 }
