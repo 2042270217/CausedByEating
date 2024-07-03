@@ -24,5 +24,5 @@ public interface CartMapper {
     boolean shouldUpdate(int businessId, String userId, int foodId);
 
     @Select("select cartId from cart where businessId=#{businessId} and userId=#{userId} and foodId=#{foodId}")
-    Integer getCartId(int foodId, String userId, int businessId);
+    Integer getCartId(int businessId, String userId, int foodId);
 }
