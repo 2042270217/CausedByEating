@@ -1,10 +1,11 @@
 package org.example.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
+
 import org.hibernate.validator.constraints.Range;
 
 @Data
