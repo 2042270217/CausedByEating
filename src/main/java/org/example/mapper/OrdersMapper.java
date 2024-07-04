@@ -15,9 +15,11 @@ public interface OrdersMapper {
     @Select("select * from orders where userId=#{userId}")
     List<Orders> list(String userId);
 
-    @Update("update orders set userId=#{userId},businessId=#{businessId},orderDate=#{orderDate},orderTotal=#{orderTotal},daId=#{daId}, orderState=#{orderState} where orderId=#{orderId}")
+    @Update("update orders set orderDate=#{orderDate},orderTotal=#{orderTotal}, orderState=#{orderState} where orderId=#{orderId}")
     void update(Orders orders);
 
     @Select("select businessId from orders where orderId=#{orderId}")
     int getBusinessIdByOrderId(int orderId);
+    @Select("select daId from orders where orderId=#{orderId}")
+    int getDaIdByOrderId(int orderId);
 }

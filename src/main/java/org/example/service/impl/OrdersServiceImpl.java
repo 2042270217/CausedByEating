@@ -60,8 +60,9 @@ public class OrdersServiceImpl implements OrdersService {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         orders.setOrderDate(formatter.format(date));
+        ordersMapper.add(orders);
 
-        output.setOrderId(ordersMapper.add(orders));
+        output.setOrderId(orders.getOrderId());
         return Result.success(output);
     }
 
@@ -74,21 +75,14 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Result update(Orders order) {
-        int bId=ordersMapper.getBusinessIdByOrderId(order.getOrderId());
-        if(bId!=order.getBusinessId()){
-            //商家异常变更
-            return Result.error(4);
-        }
-        OrdersBean output = new OrdersBean();
-
+        int businessId=ordersMapper.getBusinessIdByOrderId(order.getOrderId());
+        int daId=ordersMapper.getDaIdByOrderId(order.getOrderId());
         Map<String, Object> map = ThreadLocalUtils.get();
         String userId = (String) map.get("userId");
-        boolean check = deliveryAddressMapper.checkByUserId(order.getDaId(),userId);
-        if(!check){
-            //user与daId不匹配
-            return Result.error(2);
-        }
-        List<Cart> cartList = cartMapper.list(order.getBusinessId(), userId);
+
+        OrdersBean output = new OrdersBean();
+
+        List<Cart> cartList = cartMapper.list(businessId, userId);
         if(cartList == null || cartList.isEmpty()){
             //购物车不存在
             return Result.error(3);
@@ -103,6 +97,7 @@ public class OrdersServiceImpl implements OrdersService {
 
         order.setOrderTotal(total);
         order.setUserId(userId);
+
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         order.setOrderDate(formatter.format(date));
