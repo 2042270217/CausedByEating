@@ -20,7 +20,7 @@ public class User {
     private String userName;
     @Range(min = 0, max = 1,message = "数值越界[0,1]")
     private int userSex;
-    private String userImage;
+    private String userImg;
     @JsonIgnore
     @Range(min = 0, max = 1,message = "数值越界[0,1]")
     private int delTag;

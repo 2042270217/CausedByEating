@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @PutMapping("/updateImg")
-    public Result updateImg(@NotEmpty String userImg) {
+    public Result updateImg(String userImg) {
         userService.updateImg(userImg);
         return Result.success();
     }
